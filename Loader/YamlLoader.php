@@ -44,11 +44,17 @@ class YamlLoader
      */
     protected $directory;
 
-    public function __construct(\AppKernel $kernel, $bundles, $directory)
+    /**
+     * @var string
+     */
+    protected $dateTimeClass;
+
+    public function __construct(\AppKernel $kernel, $bundles, $directory, $dateTimeClass)
     {
         $this->bundles = $bundles;
         $this->kernel = $kernel;
         $this->directory = $directory;
+        $this->dateTimeClass = $dateTimeClass;
     }
 
     /**
@@ -107,13 +113,13 @@ class YamlLoader
             // if nothing is specified, we use doctrine orm for persistence
             $persistence = isset($fixture_data['persistence']) ? $fixture_data['persistence'] : 'orm';
             $fixture = $this->getFixtureClass($persistence);
-            $fixture = new $fixture($fixture_data, $this, $file);
+            $fixture = new $fixture($fixture_data, $this, $this->dateTimeClass);
             $fixture->load($this->getManager($persistence), func_get_args());
         }
 
         if (!is_null($this->acl_manager)) {
             foreach ($this->fixture_files as $file) {
-                $fixture = new YamlAclFixture($file, $this);
+                $fixture = new YamlAclFixture($file, $this, $this->dateTimeClass);
                 $fixture->load($this->acl_manager, func_get_args());
             }
         }

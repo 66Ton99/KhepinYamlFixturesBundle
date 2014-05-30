@@ -14,13 +14,16 @@ abstract class AbstractFixture
 
     protected $manager;
 
-    public function __construct(array $data, $loader)
+    protected $dateTimeClass;
+
+    public function __construct(array $data, $loader, $dateTimeClass)
     {
         $this->file = $data;
         if (isset($this->file['tags'])) {
             $this->tags = $this->file['tags'];
         }
         $this->loader = $loader;
+        $this->dateTimeClass = $dateTimeClass;
     }
 
     /**

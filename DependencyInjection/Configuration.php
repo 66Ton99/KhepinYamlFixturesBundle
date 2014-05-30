@@ -22,6 +22,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('directory')->defaultValue('DataFixtures')->end()
+                ->scalarNode('datetime_class')->defaultValue('\DateTime')->end()
             ->end()
         ;
 
